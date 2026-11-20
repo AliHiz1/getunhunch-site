@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unhunch — Posture nudges &amp; 1-minute desk stretches</title>
+<meta name="description" content="Unhunch nudges you to fix your posture and get up when you've been still too long, then guides a one-minute stretch. Phone only, no wearables. Join the early access list.">
+<meta property="og:title" content="Unhunch — Undo the desk hunch">
+<meta property="og:description" content="Posture nudges and one-minute desk stretches. Phone only, no wearables.">
+<meta property="og:type" content="website">
+<!-- Alan adı farklıysa bu iki adresi güncelle (og:image tam adres olmalı) -->
+<meta property="og:url" content="https://getunhunch.com/">
+<meta property="og:image" content="https://getunhunch.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://getunhunch.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ECEDE7">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ECEDE7;
+    --ink: #121412;
+    --muted: #4F544D;
+    --soft: #3A3F39;
+    --line: #C9CBC2;
+    --signal: #C8F31D;
+    --dark-line: #2A2E29;
+    --on-dark: #ECEDE7;
+    --on-dark-muted: #A9AEA5;
+    --sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --wrap: 1120px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: var(--ink); }
+  img, svg { display: block; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
+  .label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .mono { font-family: var(--mono); }
+  .skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: var(--bg); padding: 10px 14px; border-radius: 10px; z-index: 10; }
+  .skip:focus { left: 8px; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+  /* nav */
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+  .wordmark { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; }
+  .wordmark::before { content: ""; width: 4px; height: 20px; border-radius: 2px; background: var(--ink); }
+  .nav-cta { font-weight: 600; font-size: 15px; text-decoration: none; border: 2px solid var(--ink); border-radius: 12px; padding: 10px 14px; min-height: 44px; display: inline-flex; align-items: center; }
+  .nav-cta:hover { background: var(--ink); color: var(--bg); }
+
+  /* hero */
+  .hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 48px; align-items: center; padding: 40px 0 72px; }
+  h1 { font-size: clamp(48px, 8vw, 96px); line-height: 0.92; letter-spacing: -0.045em; margin: 14px 0 0; font-weight: 700; }
+  .lede { font-size: 19px; line-height: 1.45; color: var(--soft); max-width: 520px; margin: 22px 0 0; }
+
+  .form { margin-top: 28px; max-width: 520px; }
+  .form-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .form label { display: block; margin-bottom: 8px; }
+  .form input[type=email] {
+    flex: 1 1 240px; min-height: 56px; border-radius: 14px; border: 2px solid var(--ink); background: transparent;
+    padding: 0 16px; font: 500 17px var(--sans); color: var(--ink);
+  }
+  .form input::placeholder { color: #6A6F67; }
+  .btn {
+    min-height: 56px; border-radius: 14px; border: 2px solid var(--ink); background: var(--ink); color: var(--bg);
+    font: 700 17px var(--sans); padding: 0 22px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; justify-content: center;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn .arrow { color: var(--signal); }
+  .offer { margin-top: 12px; font-size: 14px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .tag { font-family: var(--mono); font-size: 11px; font-weight: 700; background: var(--signal); color: var(--ink); padding: 4px 7px; border-radius: 5px; letter-spacing: 0.04em; }
+  .form-msg { margin-top: 12px; font-size: 15px; font-weight: 600; min-height: 22px; }
+  .form-msg.ok { padding: 12px 14px; border-radius: 12px; background: var(--signal); border: 2px solid var(--ink); }
+
+  /* live spine demo */
+  .demo { border: 1px solid var(--line); border-radius: 28px; padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 16px; min-height: 440px; position: relative; }
+  .demo-left { display: flex; flex-direction: column; justify-content: space-between; }
+  .big { font-family: var(--mono); font-weight: 700; font-size: clamp(80px, 11vw, 120px); letter-spacing: -0.06em; line-height: 0.9; }
+  .big small { font-size: 18px; letter-spacing: 0; font-weight: 500; margin-left: 6px; }
+  .ruler { position: relative; height: 22px; margin-top: 18px; }
+  .ruler .track { position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: var(--line); }
+  .ruler .fill { position: absolute; left: 0; top: 10px; height: 2px; background: var(--ink); width: 0; }
+  .ruler .marker { position: absolute; top: 4px; width: 14px; height: 14px; margin-left: -7px; border-radius: 7px; border: 2px solid var(--ink); background: var(--bg); left: 0; }
+  .ruler-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .status { font-size: 17px; font-weight: 500; line-height: 1.3; margin: 12px 0 0; min-height: 44px; }
+  .demo-note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  .gotup { margin-top: 14px; min-height: 48px; border-radius: 12px; border: 2px solid var(--ink); background: transparent; font: 600 15px var(--sans); color: var(--ink); cursor: pointer; padding: 0 16px; align-self: flex-start; }
+  .gotup:hover { background: var(--ink); color: var(--bg); }
+  .spine { display: flex; flex-direction: column; align-items: center; gap: 5px; padding-top: 6px; }
+  .spine .head { width: 30px; height: 30px; border-radius: 15px; border: 2px solid var(--ink); margin-bottom: 4px; }
+  .spine .v { height: 13px; border-radius: 4px; border: 2px solid var(--ink); background: var(--ink); }
+  .spine .head, .spine .v { transition: transform 0.6s cubic-bezier(.2,.7,.2,1), background-color 0.4s; }
+  .toast {
+    position: absolute; left: 16px; right: 16px; bottom: 16px; background: var(--ink); color: var(--on-dark); border-radius: 18px; padding: 14px 16px;
+    display: flex; gap: 12px; align-items: center; transform: translateY(12px); opacity: 0; pointer-events: none; transition: all 0.35s;
+  }
+  .toast.show { transform: none; opacity: 1; pointer-events: auto; }
+  .toast .icon { width: 28px; height: 28px; border-radius: 8px; background: var(--signal); display: grid; place-items: center; flex: 0 0 auto; }
+  .toast .icon span { width: 3px; height: 14px; border-radius: 2px; background: var(--ink); }
+  .toast strong { display: block; font-size: 15px; }
+  .toast p { margin: 2px 0 0; font-size: 13px; color: var(--on-dark-muted); }
+  .toast-btn { flex: 0 0 auto; min-height: 44px; border: 0; border-radius: 12px; background: var(--signal); color: var(--ink); font: 700 14px var(--sans); padding: 0 14px; cursor: pointer; }
+
+  /* sections */
+  section { padding: 72px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: clamp(34px, 5vw, 56px); line-height: 1; letter-spacing: -0.035em; margin: 12px 0 0; max-width: 760px; }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 40px; border-top: 1px solid var(--ink); }
+  .step { padding: 22px 22px 8px 0; }
+  .step + .step { border-left: 1px solid var(--line); padding-left: 22px; }
+  .step .n { font-family: var(--mono); font-weight: 700; font-size: 15px; }
+  .step h3 { font-size: 22px; letter-spacing: -0.02em; margin: 14px 0 8px; }
+  .step p { margin: 0; color: var(--soft); line-height: 1.5; }
+
+  .dark { background: var(--ink); color: var(--on-dark); border-top: 0; }
+  .dark .label { color: var(--on-dark-muted); }
+  .stretch-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 36px; }
+  .stretch { border: 1px solid var(--dark-line); border-radius: 18px; padding: 18px; min-height: 150px; display: flex; flex-direction: column; justify-content: space-between; }
+  .stretch .meta { font-family: var(--mono); font-size: 11px; color: var(--on-dark-muted); letter-spacing: 0.08em; }
+  .stretch h3 { margin: 0; font-size: 19px; letter-spacing: -0.01em; }
+  .stretch .sec { font-family: var(--mono); font-size: 34px; font-weight: 700; color: var(--signal); letter-spacing: -0.04em; }
+
+  table.compare { width: 100%; border-collapse: collapse; margin-top: 36px; font-size: 15px; }
+  .compare th, .compare td { text-align: left; padding: 14px 10px 14px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .compare thead th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--ink); }
+  .compare tbody th { font-weight: 600; }
+  .compare td { color: var(--soft); }
+  .compare .us th, .compare .us td { color: var(--ink); font-weight: 700; }
+  .compare .us th { position: relative; }
+  .compare .us td:first-of-type, .compare .us th { background: transparent; }
+  .table-box { overflow-x: auto; }
+
+  .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 36px; }
+  .plan { border: 2px solid var(--line); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .plan.hl { border-color: var(--ink); background: var(--signal); }
+  .plan .price { font-family: var(--mono); font-size: 34px; font-weight: 700; letter-spacing: -0.04em; }
+  .plan .price small { font-size: 14px; font-weight: 500; letter-spacing: 0; }
+  .plan ul { margin: 6px 0 0; padding-left: 18px; color: var(--soft); line-height: 1.6; }
+  .plan.hl ul { color: var(--ink); }
+  .fine { font-size: 13px; color: var(--muted); margin-top: 14px; }
+
+  .faq { margin-top: 28px; border-top: 1px solid var(--ink); }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; list-style: none; padding: 18px 0; font-weight: 600; font-size: 18px; display: flex; justify-content: space-between; gap: 16px; min-height: 44px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-family: var(--mono); font-weight: 700; }
+  .faq details[open] summary::after { content: "–"; }
+  .faq p { margin: 0 0 18px; color: var(--soft); line-height: 1.55; max-width: 720px; }
+
+  .final { text-align: left; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+  footer nav { display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--muted); min-height: 44px; display: inline-flex; align-items: center; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 20px; }
+    .stretch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .plans { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .steps { grid-template-columns: minmax(0, 1fr); }
+    .step + .step { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+    .demo { grid-template-columns: minmax(0, 1fr) 96px; padding: 18px; min-height: 400px; }
+    section { padding: 56px 0; }
+    .btn { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .spine .head, .spine .v, .toast { transition: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="wrap">
+  <header class="nav">
+    <a class="wordmark" href="#" aria-label="Unhunch home">unhunch</a>
+    <a class="nav-cta" href="#join">Get early access</a>
+  </header>
+</div>
+
+<main id="main">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <span class="label">iOS &amp; Android · Launching January 2027</span>
+        <h1>Undo the<br>desk hunch.</h1>
+        <p class="lede">Unhunch nudges you to sit up straight, tells you when you’ve been still too long, and walks you through a one-minute stretch. Just your phone. No wearables, no AirPods.</p>
+
+        <form class="form waitlist" id="join" method="post" target="_blank" novalidate>
+          <input type="hidden" name="tag" value="waitlist">
+          <input type="hidden" name="metadata__signup-location" value="hero">
+          <input type="hidden" name="utm_source" value="">
+          <input type="hidden" name="utm_medium" value="">
+          <input type="hidden" name="utm_campaign" value="">
+          <label class="label" for="email-hero">Join the early access list</label>
+          <div class="form-row">
+            <input id="email-hero" name="email" type="email" autocomplete="email" placeholder="you@work.com" required>
+            <button class="btn" type="submit">Get early access <span class="arrow" aria-hidden="true">→</span></button>
+          </div>
+          <div class="offer"><span class="tag">LAUNCH WEEK</span> First year $14.99 for early-access members.</div>
+          <p class="form-msg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="demo" aria-label="Live demo: a spine that bends the longer you stay still">
+        <div class="demo-left">
+          <div>
+            <span class="label">You’ve been still for</span>
+            <div class="big"><span id="mins">0</span><small>min</small></div>
+          </div>
+          <div>
+            <div class="ruler" aria-hidden="true"><div class="track"></div><div class="fill" id="fill"></div><div class="marker" id="marker"></div></div>
+            <div class="ruler-labels" aria-hidden="true"><span>0</span><span>NUDGE AT 120</span></div>
+            <p class="status" id="status" aria-live="polite">Aligned. Next nudge in 120 min.</p>
+            <button class="gotup" type="button" id="gotup">I got up</button>
+            <p class="demo-note">Demo runs fast: 1 second here = 1 minute at your desk.</p>
+          </div>
+        </div>
+        <div class="spine" id="spine" role="img" aria-label="Spine visual"></div>
+        <div class="toast" id="toast" role="alert" aria-hidden="true">
+          <div class="icon"><span></span></div>
+          <div style="flex: 1 1 auto;"><strong>You’ve been still for 2 hours</strong><p>Get up and walk a bit. Even 2 minutes helps.</p></div>
+          <button class="toast-btn" type="button" id="toast-gotup">I got up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section aria-labelledby="how">
+    <div class="wrap">
+      <span class="label">How it works</span>
+      <h2 id="how">A nudge at the right moment. A stretch that takes a minute.</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="n">01</span>
+          <h3>Posture checks on your schedule</h3>
+          <p>Gentle reminders during your work hours only: shoulders back, chin in, screen at eye level. Never at night.</p>
+        </div>
+        <div class="step">
+          <span class="n">02</span>
+          <h3>Get-up alerts when you’re stuck</h3>
+          <p>Your phone’s motion sensor notices long stillness. Walk around and the timer resets on its own, so you’re not nagged for nothing.</p>
+        </div>
+        <div class="step">
+          <span class="n">03</span>
+          <h3>One-minute guided stretches</h3>
+          <p>Every nudge opens a short, step-by-step stretch for your neck, shoulders, back, eyes or wrists. Timer and haptics included.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark" aria-labelledby="stretches">
+    <div class="wrap">
+      <span class="label">The library</span>
+      <h2 id="stretches">Small moves for the parts that sitting wrecks.</h2>
+      <div class="stretch-grid">
+        <div class="stretch"><span class="meta">NECK</span><div><h3>Chin tucks</h3><span class="sec">28s</span></div></div>
+        <div class="stretch"><span class="meta">BACK</span><div><h3>Shoulder blade squeeze</h3><span class="sec">31s</span></div></div>
+        <div class="stretch"><span class="meta">SHOULDERS</span><div><h3>Chest opener</h3><span class="sec">51s</span></div></div>
+        <div class="stretch"><span class="meta">MOVE</span><div><h3>Stand up &amp; walk</h3><span class="sec">88s</span></div></div>
+        <div class="stretch"><span class="meta">NECK</span><div><h3>Side neck stretch</h3><span class="sec">42s</span></div></div>
+        <div class="stretch"><span class="meta">EYES</span><div><h3>20-20-20 eye break</h3><span class="sec">27s</span></div></div>
+        <div class="stretch"><span class="meta">BACK</span><div><h3>Seated cat-cow</h3><span class="sec">38s</span></div></div>
+        <div class="stretch"><span class="meta">WRISTS</span><div><h3>Wrist stretch</h3><span class="sec">70s</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="why">
+    <div class="wrap">
+      <span class="label">Why Unhunch</span>
+      <h2 id="why">Works with the phone already on your desk.</h2>
+      <div class="table-box">
+        <table class="compare">
+          <thead>
+            <tr><th scope="col">Option</th><th scope="col">Needs</th><th scope="col">Knows if you moved</th><th scope="col">Tells you what to do</th></tr>
+          </thead>
+          <tbody>
+            <tr class="us"><th scope="row">Unhunch</th><td>Your phone</td><td>Yes</td><td>1-minute guided stretch</td></tr>
+            <tr><th scope="row">Wearable posture trainers</th><td>A device on your back</td><td>Posture only</td><td>Vibrates</td></tr>
+            <tr><th scope="row">AirPods posture apps</th><td>Compatible headphones, worn</td><td>Head tilt only</td><td>An alert</td></tr>
+            <tr><th scope="row">Timer reminder apps</th><td>Your phone</td><td>No, fixed clock</td><td>Usually nothing</td></tr>
+            <tr><th scope="row">Smartwatch stand reminders</th><td>A watch</td><td>Yes</td><td>“Stand up”</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="pricing">
+    <div class="wrap">
+      <span class="label">Pricing</span>
+      <h2 id="pricing">Free to start. Premium when you want more.</h2>
+      <div class="plans">
+        <div class="plan">
+          <span class="label">Free</span>
+          <span class="price">$0</span>
+          <ul>
+            <li>6 guided stretches</li>
+            <li>Posture check every 2 hours</li>
+            <li>Get-up alert after 2 hours still</li>
+          </ul>
+        </div>
+        <div class="plan hl">
+          <span class="label" style="color: var(--ink)">Premium · Yearly</span>
+          <span class="price">$24.99<small> /year</small></span>
+          <ul>
+            <li>Every stretch, plus new ones</li>
+            <li>Reminders from every 30 min</li>
+            <li>Your own get-up threshold</li>
+            <li>Programs like the 7-Day Tech Neck Reset</li>
+            <li>7-day free trial</li>
+          </ul>
+        </div>
+        <div class="plan">
+          <span class="label">Monthly or lifetime</span>
+          <span class="price">$4.99<small> /month</small></span>
+          <ul>
+            <li>Same Premium features</li>
+            <li>Or pay once: $49.99 lifetime</li>
+          </ul>
+        </div>
+      </div>
+      <p class="fine">Prices in USD; your App Store or Google Play shows local pricing. Early-access members get the first year for $14.99 during launch week.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="faq">
+    <div class="wrap">
+      <span class="label">FAQ</span>
+      <h2 id="faq">Questions</h2>
+      <div class="faq">
+        <details>
+          <summary>Do I need AirPods, a watch or a wearable?</summary>
+          <p>No. Unhunch uses your phone’s own motion sensor and scheduled reminders. Nothing else to buy or wear.</p>
+        </details>
+        <details>
+          <summary>How does it know I’ve been sitting?</summary>
+          <p>Your phone notices when it hasn’t moved with you for a while. When you walk around, the timer resets. You can also tap “I got up” yourself.</p>
+        </details>
+        <details>
+          <summary>Will it spam me with notifications?</summary>
+          <p>Reminders only come during the work hours you set, at the interval you choose. Weekends are off by default.</p>
+        </details>
+        <details>
+          <summary>What happens to my data?</summary>
+          <p>Your activity and stats stay on your phone. No account is needed to use Unhunch.</p>
+        </details>
+        <details>
+          <summary>Is this medical advice?</summary>
+          <p>No. Unhunch is a general wellness app, not a medical device or treatment. If something hurts, stop and talk to a professional.</p>
+        </details>
+        <details>
+          <summary>When can I get it?</summary>
+          <p>We’re launching on iOS and Android in January 2027. Early-access members get beta invites in late December and the launch-week price.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" aria-labelledby="final">
+    <div class="wrap">
+      <span class="label">Early access</span>
+      <h2 id="final">Your neck will thank you by Friday.</h2>
+      <form class="form waitlist" method="post" target="_blank" novalidate>
+        <input type="hidden" name="tag" value="waitlist">
+        <input type="hidden" name="metadata__signup-location" value="footer">
+        <input type="hidden" name="utm_source" value="">
+        <input type="hidden" name="utm_medium" value="">
+        <input type="hidden" name="utm_campaign" value="">
+        <label class="label" for="email-final">Email</label>
+        <div class="form-row">
+          <input id="email-final" name="email" type="email" autocomplete="email" placeholder="you@work.com" required>
+          <button class="btn" type="submit">Get early access <span class="arrow" aria-hidden="true">→</span></button>
+        </div>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<div class="wrap">
+  <footer>
+    <span>© 2027 Unhunch</span>
+    <nav aria-label="Legal">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/support">Support</a>
+      <a href="mailto:hello@getunhunch.com">Contact</a>
+    </nav>
+  </footer>
+</div>
+
+<script>
+/*
+ * BUTTONDOWN_USERNAME: Buttondown hesabındaki kullanıcı adın (Settings → Basics → Username).
+ * Form, Buttondown'un önerdiği şekilde standart HTML formu olarak gönderilir (fetch değil):
+ * onay ve gerekirse CAPTCHA, Buttondown'un sayfasında yeni sekmede açılır.
+ * Boş bırakılırsa form hiçbir yere gönderilmez ve "henüz bağlı değil" uyarısı gösterilir.
+ */
+const BUTTONDOWN_USERNAME = '';
+
+(function waitlist() {
+  const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  const params = new URLSearchParams(location.search);
+  document.querySelectorAll('form.waitlist').forEach((form) => {
+    const input = form.querySelector('input[type=email]');
+    const msg = form.querySelector('.form-msg');
+    if (BUTTONDOWN_USERNAME) {
+      form.action = 'https://buttondown.com/api/emails/embed-subscribe/' + encodeURIComponent(BUTTONDOWN_USERNAME);
+    }
+    // Reklam/paylaşım bağlantılarındaki utm_* değerlerini aboneye taşı
+    ['utm_source', 'utm_medium', 'utm_campaign'].forEach((k) => {
+      const field = form.querySelector('input[name=' + k + ']');
+      if (field) field.value = params.get(k) || '';
+    });
+    form.addEventListener('submit', (e) => {
+      msg.className = 'form-msg';
+      msg.textContent = '';
+      const email = input.value.trim();
+      if (!validEmail(email)) {
+        e.preventDefault();
+        msg.textContent = 'Please enter a valid email address.';
+        input.focus();
+        return;
+      }
+      if (!BUTTONDOWN_USERNAME) {
+        e.preventDefault();
+        msg.textContent = 'Waitlist is not connected yet (set BUTTONDOWN_USERNAME).';
+        return;
+      }
+      // Gönderim tarayıcıya bırakılır; sayfada teşekkür mesajı gösterilir.
+      msg.className = 'form-msg ok';
+      msg.textContent = "Almost there. Check your inbox to confirm. Meanwhile, try a chin tuck: glide your chin straight back and hold 5 seconds.";
+    });
+  });
+})();
+
+(function spineDemo() {
+  const spine = document.getElementById('spine');
+  const minsEl = document.getElementById('mins');
+  const fill = document.getElementById('fill');
+  const marker = document.getElementById('marker');
+  const status = document.getElementById('status');
+  const toast = document.getElementById('toast');
+  const LIMIT = 120;
+  const N = 13;
+  const signal = getComputedStyle(document.documentElement).getPropertyValue('--signal').trim();
+  const ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
+
+  const head = document.createElement('div');
+  head.className = 'head';
+  spine.appendChild(head);
+  const verts = [];
+  for (let i = 0; i < N; i++) {
+    const v = document.createElement('div');
+    v.className = 'v';
+    v.style.width = (28 + i * 1.6) + 'px';
+    spine.appendChild(v);
+    verts.push(v);
+  }
+
+  let start = Date.now();
+  let toastShown = false;
+
+  function render() {
+    const mins = Math.min(150, Math.floor((Date.now() - start) / 1000));
+    const bend = Math.min(mins / LIMIT, 1.25);
+    const pct = Math.min(bend, 1) * 100;
+    minsEl.textContent = mins;
+    fill.style.width = pct + '%';
+    marker.style.left = pct + '%';
+    marker.style.background = bend >= 0.75 ? signal : '';
+    head.style.transform = 'translateX(' + Math.round(bend * 40) + 'px)';
+    verts.forEach((v, i) => {
+      const s = Math.sin(Math.PI * (i / (N - 1)) * 0.85 + 0.25);
+      v.style.transform = 'translateX(' + Math.round(bend * 30 * s) + 'px)';
+      v.style.background = bend >= 0.75 && s > 0.75 ? signal : ink;
+    });
+    const left = Math.max(0, LIMIT - mins);
+    status.textContent = mins >= LIMIT
+      ? 'Past your limit. Stand up now.'
+      : bend >= 0.75 ? 'Drifting forward. Stand up in ' + left + ' min.'
+      : 'Aligned. Next nudge in ' + left + ' min.';
+    if (mins >= LIMIT && !toastShown) {
+      toastShown = true;
+      toast.classList.add('show');
+      toast.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  const reset = () => {
+    start = Date.now();
+    toastShown = false;
+    toast.classList.remove('show');
+    toast.setAttribute('aria-hidden', 'true');
+    render();
+  };
+  document.getElementById('gotup').addEventListener('click', reset);
+  document.getElementById('toast-gotup').addEventListener('click', reset);
+
+  render();
+  setInterval(render, 1000);
+})();
+</script>
+</body>
+</html>

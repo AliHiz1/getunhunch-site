@@ -1,0 +1,35 @@
+:root {
+  --bg: #ECEDE7;
+  --ink: #121412;
+  --muted: #4F544D;
+  --soft: #3A3F39;
+  --line: #C9CBC2;
+  --signal: #C8F31D;
+  --sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: var(--ink); }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 0 32px; }
+.wordmark { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; }
+.wordmark::before { content: ""; width: 4px; height: 20px; border-radius: 2px; background: var(--ink); }
+.back { font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: clamp(40px, 7vw, 64px); letter-spacing: -0.04em; line-height: 1; margin: 10px 0 8px; }
+.meta { font-family: var(--mono); font-size: 13px; color: var(--muted); margin: 0 0 28px; }
+h2 { font-size: 22px; letter-spacing: -0.02em; margin: 40px 0 10px; padding-top: 20px; border-top: 1px solid var(--line); }
+h3 { font-size: 17px; margin: 22px 0 6px; }
+p, li { font-size: 16px; line-height: 1.6; color: var(--soft); }
+ul { padding-left: 20px; }
+.summary { border: 2px solid var(--ink); background: var(--signal); border-radius: 18px; padding: 18px 20px 6px; }
+.summary strong { font-size: 17px; }
+.summary li { color: var(--ink); }
+footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 24px 0 40px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+footer nav { display: flex; gap: 18px; }
+footer a { color: var(--muted); min-height: 44px; display: inline-flex; align-items: center; }
+.lang { display: inline-block; font-weight: 600; min-height: 44px; line-height: 44px; }
+hr { border: 0; border-top: 2px solid var(--ink); margin: 64px 0 24px; }
+.summary { margin: 20px 0; padding-bottom: 18px; }
